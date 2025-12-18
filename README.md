@@ -1,128 +1,150 @@
-# RootProxy
+ <div align="center">
+ 
+ <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%" />
+ 
+ <img src="https://github.com/lily0ng.png" width="180" height="180" alt="lily0ng" />
+ 
+ <h1>
+   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=800&size=34&duration=2500&pause=800&color=667EEA&center=true&vCenter=true&width=700&lines=RootProxy;Terminal-Based+Proxy+Management;Bubble+Tea+TUI+%2B+REST+API;HTB-Inspired+Ops+Console" alt="Typing SVG" />
+ </h1>
+ 
+ <p>
+ Advanced proxy management with a GUI-like terminal interface. Built for offensive operations, lab workflows, and repeatable proxy hygiene.
+ </p>
+ 
+ <p>
+   <a href="https://github.com/lily0ng/RootProxy">
+     <img src="https://img.shields.io/badge/Repo-GitHub-0D1117?style=for-the-badge&logo=github&logoColor=white" alt="Repo" />
+   </a>
+   <img src="https://img.shields.io/badge/Go-1.21%2B-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go" />
+   <img src="https://img.shields.io/badge/TUI-Bubble%20Tea-7C3AED?style=for-the-badge" alt="TUI" />
+   <img src="https://img.shields.io/badge/API-REST-22C55E?style=for-the-badge" alt="API" />
+ </p>
+ 
+ <p>
+   <code>git clone https://github.com/lily0ng/RootProxy.git</code>
+ </p>
+ 
+ <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%" />
+ 
+ </div>
+ 
+ ## Overview
+ 
+ RootProxy is an HTB-inspired operations console for managing proxies, profiles, and (eventually) routing/chaining/monitoring from a single TUI.
+ 
+ Current build status: scaffold is runnable and provides:
+ 
+ - Proxy list + active proxy selection placeholder
+ - Connectivity test (TCP dial + latency)
+ - Profiles store (in-memory)
+ - Certificate store + self-signed certificate generation utilities
+ - Optional REST API skeleton for tool integrations
 
-```
-[HTB]  ██████╗░░█████╗░░█████╗░████████╗
-      ██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝
-      ██████╔╝██║░░██║██║░░██║░░░██║░░░
-      ██╔══██╗██║░░██║██║░░██║░░░██║░░░
-      ██║░░██║╚█████╔╝╚█████╔╝░░░██║░░░
-      ╚═╝░░╚═╝░╚════╝░░╚════╝░░░░╚═╝░░░
+ ## Core Features
 
-RootProxy - Terminal-Based Proxy Management System
-```
-
-A terminal-first proxy management system for penetration testers, built in Go with a Bubble Tea TUI.
-
-Repository: https://github.com/lily0ng/RootProxy.git
-
-## Features (Roadmap)
-
-- Proxy management (HTTP/HTTPS/SOCKS4/SOCKS5)
-- Bulk import/export
-- Proxy testing (latency/connectivity)
-- Auto-rotation (planned)
-- Certificate manager (import/self-signed generation)
-- Profiles (save/switch proxy chains)
-- Routing rules (planned)
-- Proxy chains (planned)
-- Monitoring & analytics (planned)
-- Security features (DoH/DoT, leak protection, kill switch) (planned)
-- Integrations (Burp/Nmap/Metasploit) (planned)
-
-## Quick Start
-
-### Requirements
-
-- Go 1.21+
-
-### Run (TUI)
-
-From the project root:
-
-```bash
-go run ./cmd
-```
-
-Run with a specific profile:
-
-```bash
-go run ./cmd --profile htb-pentest
-```
-
-### Run (TUI + REST API)
-
-Start the optional API server:
-
-```bash
-go run ./cmd --api 127.0.0.1:8081
-```
-
-## TUI Keys
-
-- `1..0` switch screens
-- `Ctrl+P` proxy dashboard
-- `Ctrl+C` certificate manager
-- `Ctrl+R` routing rules
-- `Ctrl+M` monitoring
-- `Ctrl+S` settings
-- `F1` help
-- `F4` test active proxy (TCP connectivity + latency)
-- `F10` / `q` / `Esc` exit
-
-## API (v1)
-
-When started with `--api`, RootProxy exposes a small REST surface intended for integrations.
-
-- `GET /api/v1/status`
-- `GET /api/v1/proxy/list`
-- `POST /api/v1/proxy/add`
-- `POST /api/v1/profile/switch`
-
-Example:
-
-```bash
-curl -s http://127.0.0.1:8081/api/v1/status
-```
-
-## Project Structure
-
-```
-RootProxy/
-├── cmd/
-│   └── main.go
-├── internal/
-│   ├── cert/
-│   │   ├── generator.go
-│   │   └── manager.go
-│   ├── config/
-│   │   ├── profiles.go
-│   │   └── settings.go
-│   ├── proxy/
-│   │   ├── chain.go
-│   │   ├── manager.go
-│   │   ├── types.go
-│   │   └── validator.go
-│   ├── rootproxy/
-│   │   └── app.go
-│   └── tui/
-│       ├── model.go
-│       ├── screens.go
-│       └── theme.go
-└── pkg/
-    ├── api/
-    │   ├── routes.go
-    │   └── server.go
-    ├── integrations/
-    │   └── integrations.go
-    └── scripting/
-        └── scripting.go
-```
-
-## Notes
-
-- This repository currently provides a working scaffold (TUI + API skeleton) with core domain primitives.
-- The next milestones are persistence (profiles/proxies on disk), routing rules, chain execution, and a richer proxy editing UI.
-
-## License
-
-TBD
+ - [x] Proxy management (HTTP/HTTPS/SOCKS4/SOCKS5)
+ - [ ] Bulk import/export
+ - [x] Proxy testing (latency/connectivity)
+ - [ ] Auto-rotation (planned)
+ - [x] Certificate manager (import/self-signed generation)
+ - [x] Profiles (save/switch proxy chains)
+ - [ ] Routing rules (planned)
+ - [ ] Proxy chains (planned)
+ - [ ] Monitoring & analytics (planned)
+ - [ ] Security features (DoH/DoT, leak protection, kill switch) (planned)
+ - [ ] Integrations (Burp/Nmap/Metasploit) (planned)
+ 
+ ## Quick Start
+ 
+ ### Requirements
+ 
+ - Go 1.21+
+ 
+ ### Run (TUI)
+ 
+ ```bash
+ go run ./cmd
+ ```
+ 
+ Run with a specific profile:
+ 
+ ```bash
+ go run ./cmd --profile htb-pentest
+ ```
+ 
+ ### Run (TUI + REST API)
+ 
+ ```bash
+ go run ./cmd --api 127.0.0.1:8081
+ ```
+ 
+ ## TUI Hotkeys
+ 
+ - `1..0` switch screens
+ - `Ctrl+P` proxy dashboard
+ - `Ctrl+C` certificate manager
+ - `Ctrl+R` routing rules
+ - `Ctrl+M` monitoring
+ - `Ctrl+S` settings
+ - `F1` help
+ - `F4` test active proxy (connectivity + latency)
+ - `F10` / `q` / `Esc` exit
+ 
+ ## API (v1)
+ 
+ When started with `--api`, RootProxy exposes a minimal REST surface intended for integrations.
+ 
+ - `GET /api/v1/status`
+ - `GET /api/v1/proxy/list`
+ - `POST /api/v1/proxy/add`
+ - `POST /api/v1/profile/switch`
+ 
+ Example:
+ 
+ ```bash
+ curl -s http://127.0.0.1:8081/api/v1/status
+ ```
+ 
+ ## Features (Roadmap)
+ 
+ - Proxy management: add/remove/edit, import/export, validation
+ - Certificate management: CA import/export, self-signed, MITM support
+ - Profiles: save/switch/share (encrypted), schedule switching
+ - Advanced routing: domain/country/app-based, load balancing, failover
+ - Proxy chains: up to 5 hops, visual chain builder, random chain generator
+ - Monitoring: success/failure rate, bandwidth usage, log search
+ - Security: DoH/DoT, leak protection, kill switch
+ - Integrations: Burp, Nmap, Metasploit routing
+ 
+ ## Project Structure
+ 
+ ```
+ RootProxy/
+ ├── cmd/
+ │   └── main.go
+ ├── internal/
+ │   ├── cert/
+ │   ├── config/
+ │   ├── proxy/
+ │   ├── rootproxy/
+ │   └── tui/
+ └── pkg/
+     ├── api/
+     ├── integrations/
+     └── scripting/
+ ```
+ 
+ ## Author
+ 
+ - GitHub: https://github.com/lily0ng
+ 
+ <div align="center">
+ 
+ <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%" />
+ 
+ </div>
+ 
+ ## License
+ 
+ TBD
