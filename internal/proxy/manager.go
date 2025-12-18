@@ -7,9 +7,10 @@ import (
 )
 
 type Manager struct {
-	mu     sync.RWMutex
-	byID   map[string]Proxy
-	byName map[string]string
+	mu         sync.RWMutex
+	byID       map[string]Proxy
+	byName     map[string]string
+	activeName string
 }
 
 func NewManager() *Manager {
@@ -40,6 +41,9 @@ func (m *Manager) Add(p Proxy) error {
 	}
 	m.byID[p.ID] = p
 	m.byName[p.Name] = p.ID
+	if m.activeName == "" {
+		m.activeName = p.Name
+	}
 	return nil
 }
 
@@ -85,6 +89,13 @@ func (m *Manager) Remove(id string) error {
 	}
 	delete(m.byID, id)
 	delete(m.byName, p.Name)
+	if m.activeName == p.Name {
+		m.activeName = ""
+		for name := range m.byName {
+			m.activeName = name
+			break
+		}
+	}
 	return nil
 }
 
@@ -97,6 +108,39 @@ func (m *Manager) GetByName(name string) (Proxy, bool) {
 	}
 	p, ok := m.byID[id]
 	return p, ok
+}
+
+func (m *Manager) ActiveName() string {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	return m.activeName
+}
+
+func (m *Manager) GetActive() (Proxy, bool) {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	if m.activeName == "" {
+		return Proxy{}, false
+	}
+	id, ok := m.byName[m.activeName]
+	if !ok {
+		return Proxy{}, false
+	}
+	p, ok := m.byID[id]
+	return p, ok
+}
+
+func (m *Manager) SetActive(name string) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	if name == "" {
+		return errors.New("proxy name required")
+	}
+	if _, ok := m.byName[name]; !ok {
+		return errors.New("proxy not found")
+	}
+	m.activeName = name
+	return nil
 }
 
 func (m *Manager) List() []Proxy {
