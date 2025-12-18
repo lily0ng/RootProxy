@@ -54,6 +54,66 @@
  - [ ] Monitoring & analytics (planned)
  - [ ] Security features (DoH/DoT, leak protection, kill switch) (planned)
  - [ ] Integrations (Burp/Nmap/Metasploit) (planned)
+
+ ## Planned Features (Details)
+
+ ### Routing Rules (planned)
+
+ - **Domain-based routing**
+   - `*.corp.local`, `*.hackthebox.eu` style glob matching
+   - Optional regex rules (advanced)
+ - **IP/Country-based routing**
+   - GeoIP-driven decisions (country/ASN) for egress control
+ - **Application-specific routing**
+   - Route traffic based on process/app (Windows/Linux strategies)
+ - **Actions**
+   - `direct`, `proxy`, `chain`, `profile`
+ - **Failover-aware routing**
+   - Automatic fallback when a proxy/chain fails health checks
+
+ ### Proxy Chains (planned)
+
+ - **Multi-hop chains**
+   - Up to 5 hops
+ - **Chain validation**
+   - Hop-by-hop connectivity test
+   - End-to-end test and latency scoring
+ - **Visual chain builder (TUI)**
+   - Create/edit/reorder hops interactively
+ - **Random chain generator**
+   - Build randomized chains from tagged/filtered proxy pools
+
+ ### Monitoring & Analytics (planned)
+
+ - **Per-proxy health metrics**
+   - Success/failure rates, last-seen, rolling latency
+ - **Bandwidth tracking**
+   - Traffic totals per proxy/chain/profile
+ - **Logs with search**
+   - Structured events (connect, failover, rotate, errors)
+ - **TUI dashboards**
+   - Live status panels and trend views
+
+ ### Security Features (planned)
+
+ - **DNS security**
+   - DNS-over-HTTPS (DoH) / DNS-over-TLS (DoT) options
+ - **Leak protection**
+   - DNS leak checks and rule-based mitigation
+   - Optional “deny-by-default” egress rules
+ - **Kill switch**
+   - If proxy/chain drops, block outbound traffic (platform-dependent)
+ - **Certificate / MITM support**
+   - Better workflows for CA install/validation for intercept proxies
+
+ ### Integrations (planned)
+
+ - **Burp Suite**
+   - Quick profile generation (HTTP proxy + CA handling)
+ - **Nmap**
+   - Helpers to run scans via proxy (where supported) and manage configs
+ - **Metasploit**
+   - Routing/chain presets and listener-friendly profiles
  
  ## Quick Start
  
