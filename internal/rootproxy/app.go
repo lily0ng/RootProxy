@@ -3,9 +3,9 @@ package rootproxy
 import (
 	"time"
 
-	"github.com/yourname/rootproxy/internal/cert"
-	"github.com/yourname/rootproxy/internal/config"
-	"github.com/yourname/rootproxy/internal/proxy"
+	"github.com/lily0ng/RootProxy/internal/cert"
+	"github.com/lily0ng/RootProxy/internal/config"
+	"github.com/lily0ng/RootProxy/internal/proxy"
 )
 
 type App struct {

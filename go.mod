@@ -1,4 +1,4 @@
-module github.com/yourname/rootproxy
+module github.com/lily0ng/RootProxy
 
 go 1.21
 

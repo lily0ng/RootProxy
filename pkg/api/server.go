@@ -7,7 +7,7 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/yourname/rootproxy/internal/rootproxy"
+	"github.com/lily0ng/RootProxy/internal/rootproxy"
 )
 
 type Server struct {

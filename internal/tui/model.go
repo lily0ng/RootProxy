@@ -8,8 +8,8 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 
-	"github.com/yourname/rootproxy/internal/proxy"
-	"github.com/yourname/rootproxy/internal/rootproxy"
+	"github.com/lily0ng/RootProxy/internal/proxy"
+	"github.com/lily0ng/RootProxy/internal/rootproxy"
 )
 
 type screen int

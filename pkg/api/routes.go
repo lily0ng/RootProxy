@@ -6,8 +6,8 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/yourname/rootproxy/internal/proxy"
-	"github.com/yourname/rootproxy/internal/rootproxy"
+	"github.com/lily0ng/RootProxy/internal/proxy"
+	"github.com/lily0ng/RootProxy/internal/rootproxy"
 )
 
 func RegisterRoutes(r *mux.Router, app *rootproxy.App) {

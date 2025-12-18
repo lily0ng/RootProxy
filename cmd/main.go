@@ -10,9 +10,9 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/sirupsen/logrus"
 
-	"github.com/yourname/rootproxy/internal/rootproxy"
-	"github.com/yourname/rootproxy/internal/tui"
-	"github.com/yourname/rootproxy/pkg/api"
+	"github.com/lily0ng/RootProxy/internal/rootproxy"
+	"github.com/lily0ng/RootProxy/internal/tui"
+	"github.com/lily0ng/RootProxy/pkg/api"
 )
 
 func main() {
