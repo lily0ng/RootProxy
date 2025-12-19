@@ -92,3 +92,23 @@ func renderSettings(m Model) string {
 	panel := panelStyle(m.theme)
 	return panel.Render("Settings\n\nTheme: " + m.app.Settings.Theme + "\n")
 }
+
+// munal code with go ( for rendercontriolshelp )
+
+func renderControlsHelp(m Model) string {
+	helpStyle := lipgloss.NewStyle().Foreground(m.theme.Faint)
+	helpText := "Controls: ↑/↓ Navigate | Enter Select | F1 Dashboard | F2 Proxies | F3 Certs | F4 Test Proxy | F5 Profiles | F6 Routing | F7 Chains | F8 Monitoring | F9 Security | F10 Integrations | F11 Advanced | F12 Settings | q Quit"
+	return helpStyle.Render(helpText)
+}
+
+func PanelStyleThemes(theme Theme) lipgloss.Style {
+	return lipgloss.NewStyle().
+		Border(lipgloss.RoundedBorder()).
+		BorderForeground(theme.Border).
+		Padding(1, 2).
+		Margin(1, 2)
+}
+
+// End Of Render Controls Help
+
+
