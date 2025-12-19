@@ -30,91 +30,37 @@
  </div>
  
  ## Overview
- 
- RootProxy is an HTB-inspired operations console for managing proxies, profiles, and (eventually) routing/chaining/monitoring from a single TUI.
- 
- Current build status: scaffold is runnable and provides:
- 
- - Proxy list + active proxy selection placeholder
- - Connectivity test (TCP dial + latency)
- - Profiles store (in-memory)
- - Certificate store + self-signed certificate generation utilities
- - Optional REST API skeleton for tool integrations
+
+RootProxy is an HTB-inspired operations console for managing proxies, profiles, routing rules, chains, and operational utilities from a single TUI.
+
+Current build status: runnable and provides:
+
+- Proxy store (add/update/remove, active selection)
+- Proxy connectivity testing (TCP dial + latency)
+- Proxy import/export (JSON + text)
+- Profiles store (in-memory) with per-profile chain lists
+- Chain store (up to 5 hops)
+- Routing rules store (domain glob/suffix + CIDR)
+- Rotation (round-robin/random) via API
+- Certificate store + self-signed certificate generation utilities
+- Monitoring metrics store (records proxy test results)
+- Minimal integrations helpers (Burp env export, proxychains.conf generator)
+- Optional REST API server for tool integrations
 
  ## Core Features
 
- - [x] Proxy management (HTTP/HTTPS/SOCKS4/SOCKS5)
- - [ ] Bulk import/export
- - [x] Proxy testing (latency/connectivity)
- - [ ] Auto-rotation (planned)
- - [x] Certificate manager (import/self-signed generation)
- - [x] Profiles (save/switch proxy chains)
- - [ ] Routing rules (planned)
- - [ ] Proxy chains (planned)
- - [ ] Monitoring & analytics (planned)
- - [ ] Security features (DoH/DoT, leak protection, kill switch) (planned)
- - [ ] Integrations (Burp/Nmap/Metasploit) (planned)
+- [x] Proxy management (HTTP/HTTPS/SOCKS4/SOCKS5)
+- [x] Bulk import/export (JSON + text)
+- [x] Proxy testing (latency/connectivity)
+- [x] Auto-rotation (API-triggered: round-robin/random)
+- [x] Certificate manager (import/self-signed generation)
+- [x] Profiles (save/switch proxy chains)
+- [x] Routing rules store + API
+- [x] Proxy chains store + API
+- [x] Monitoring metrics store + API
+- [x] Security settings store + API
+- [x] Integrations helpers (Burp env, proxychains.conf)
 
- ## Planned Features (Details)
-
- ### Routing Rules (planned)
-
- - **Domain-based routing**
-   - `*.corp.local`, `*.hackthebox.eu` style glob matching
-   - Optional regex rules (advanced)
- - **IP/Country-based routing**
-   - GeoIP-driven decisions (country/ASN) for egress control
- - **Application-specific routing**
-   - Route traffic based on process/app (Windows/Linux strategies)
- - **Actions**
-   - `direct`, `proxy`, `chain`, `profile`
- - **Failover-aware routing**
-   - Automatic fallback when a proxy/chain fails health checks
-
- ### Proxy Chains (planned)
-
- - **Multi-hop chains**
-   - Up to 5 hops
- - **Chain validation**
-   - Hop-by-hop connectivity test
-   - End-to-end test and latency scoring
- - **Visual chain builder (TUI)**
-   - Create/edit/reorder hops interactively
- - **Random chain generator**
-   - Build randomized chains from tagged/filtered proxy pools
-
- ### Monitoring & Analytics (planned)
-
- - **Per-proxy health metrics**
-   - Success/failure rates, last-seen, rolling latency
- - **Bandwidth tracking**
-   - Traffic totals per proxy/chain/profile
- - **Logs with search**
-   - Structured events (connect, failover, rotate, errors)
- - **TUI dashboards**
-   - Live status panels and trend views
-
- ### Security Features (planned)
-
- - **DNS security**
-   - DNS-over-HTTPS (DoH) / DNS-over-TLS (DoT) options
- - **Leak protection**
-   - DNS leak checks and rule-based mitigation
-   - Optional “deny-by-default” egress rules
- - **Kill switch**
-   - If proxy/chain drops, block outbound traffic (platform-dependent)
- - **Certificate / MITM support**
-   - Better workflows for CA install/validation for intercept proxies
-
- ### Integrations (planned)
-
- - **Burp Suite**
-   - Quick profile generation (HTTP proxy + CA handling)
- - **Nmap**
-   - Helpers to run scans via proxy (where supported) and manage configs
- - **Metasploit**
-   - Routing/chain presets and listener-friendly profiles
- 
  ## Quick Start
  
  ### Requirements
@@ -139,26 +85,59 @@
  go run ./cmd --api 127.0.0.1:8081
  ```
  
- ## TUI Hotkeys
+ ### Run (REST API only / headless)
  
- - `1..0` switch screens
- - `Ctrl+P` proxy dashboard
- - `Ctrl+C` certificate manager
- - `Ctrl+R` routing rules
- - `Ctrl+M` monitoring
- - `Ctrl+S` settings
- - `F1` help
- - `F4` test active proxy (connectivity + latency)
- - `F10` / `q` / `Esc` exit
+ ```bash
+ go run ./cmd --api 127.0.0.1:8081 --headless
+ ```
+ 
+ ## TUI Hotkeys
+
+- `1..0` switch screens
+- `Ctrl+P` proxy dashboard
+- `Ctrl+C` certificate manager
+- `Ctrl+R` routing rules
+- `Ctrl+M` monitoring
+- `Ctrl+S` settings
+- `F1` help
+- `F4` test active proxy (connectivity + latency)
+- `F10` / `q` / `Esc` exit
  
  ## API (v1)
- 
- When started with `--api`, RootProxy exposes a minimal REST surface intended for integrations.
- 
- - `GET /api/v1/status`
- - `GET /api/v1/proxy/list`
- - `POST /api/v1/proxy/add`
- - `POST /api/v1/profile/switch`
+
+When started with `--api`, RootProxy exposes a minimal REST surface intended for integrations.
+
+Note: `--api` runs alongside the TUI by default. If you want an API-only process (recommended for scripting/curl), use `--headless`.
+
+- `GET /api/v1/status`
+- `GET /api/v1/proxy/list`
+- `GET /api/v1/proxy/active`
+- `POST /api/v1/proxy/active`
+- `POST /api/v1/proxy/add`
+- `POST /api/v1/proxy/update/{id}`
+- `DELETE /api/v1/proxy/remove/{id}`
+- `POST /api/v1/proxy/test?name=<proxy>&timeout_ms=<ms>`
+- `GET /api/v1/proxy/export?format=json|text`
+- `POST /api/v1/proxy/import?format=json|text`
+- `POST /api/v1/profile/switch`
+- `GET /api/v1/profile/list`
+- `POST /api/v1/profile/upsert`
+- `GET /api/v1/chain/list`
+- `POST /api/v1/chain/upsert`
+- `DELETE /api/v1/chain/remove/{name}`
+- `GET /api/v1/routing/list`
+- `POST /api/v1/routing/upsert`
+- `DELETE /api/v1/routing/remove/{id}`
+- `POST /api/v1/rotation/rotate`
+- `GET /api/v1/cert/list`
+- `POST /api/v1/cert/add`
+- `POST /api/v1/cert/generate_self_signed`
+- `GET /api/v1/security/get`
+- `POST /api/v1/security/set`
+- `GET /api/v1/monitoring/metrics`
+- `GET /api/v1/monitoring/started`
+- `GET /api/v1/integrations/burp/env`
+- `GET /api/v1/integrations/proxychains/conf?profile=<name>`
  
  Example:
  
@@ -166,16 +145,22 @@
  curl -s http://127.0.0.1:8081/api/v1/status
  ```
  
- ## Features (Roadmap)
+ More examples:
  
- - Proxy management: add/remove/edit, import/export, validation
- - Certificate management: CA import/export, self-signed, MITM support
- - Profiles: save/switch/share (encrypted), schedule switching
- - Advanced routing: domain/country/app-based, load balancing, failover
- - Proxy chains: up to 5 hops, visual chain builder, random chain generator
- - Monitoring: success/failure rate, bandwidth usage, log search
- - Security: DoH/DoT, leak protection, kill switch
- - Integrations: Burp, Nmap, Metasploit routing
+ ```bash
+ # Add a proxy
+ curl -s -X POST http://127.0.0.1:8081/api/v1/proxy/add \
+   -H 'Content-Type: application/json' \
+   -d '{"name":"Local-Burp","type":"http","host":"127.0.0.1","port":8080,"auth":"none"}'
+
+ # Set active proxy
+ curl -s -X POST http://127.0.0.1:8081/api/v1/proxy/active \
+   -H 'Content-Type: application/json' \
+   -d '{"name":"Local-Burp"}'
+
+ # Test a proxy (or omit name= to test current active)
+ curl -s -X POST 'http://127.0.0.1:8081/api/v1/proxy/test?name=Local-Burp&timeout_ms=3000'
+ ```
  
  ## Project Structure
  

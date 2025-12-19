@@ -98,10 +98,6 @@ func (m Model) View() string {
 }
 
 func (m Model) handleKey(k tea.KeyMsg) (tea.Model, tea.Cmd) {
-	if k.Type == tea.KeyCtrlC {
-		return m, tea.Quit
-	}
-
 	switch k.String() {
 	case "q", "esc", "f10":
 		return m, tea.Quit
