@@ -110,6 +110,20 @@ func (m *Manager) GetByName(name string) (Proxy, bool) {
 	return p, ok
 }
 
+func (m *Manager) IDByName(name string) (string, bool) {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	id, ok := m.byName[name]
+	return id, ok
+}
+
+func (m *Manager) GetByID(id string) (Proxy, bool) {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	p, ok := m.byID[id]
+	return p, ok
+}
+
 func (m *Manager) ActiveName() string {
 	m.mu.RLock()
 	defer m.mu.RUnlock()

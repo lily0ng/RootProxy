@@ -47,7 +47,7 @@ func NewRoutingStore() *RoutingStore {
 
 func (s *RoutingStore) Upsert(r RoutingRule) error {
 	if r.ID == "" {
-		return errors.New("routing rule id required")
+		r.ID = NewID()
 	}
 	if r.Name == "" {
 		return errors.New("routing rule name required")
